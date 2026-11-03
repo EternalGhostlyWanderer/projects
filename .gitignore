@@ -1,0 +1,9 @@
+.idea/
+.vs/
+build/
+cmake-build-*/
+__MACOSX/
+.DS_Store
+*.exe
+*.o
+.env

@@ -1,0 +1,8 @@
+/build/
+/cmake-build/
+/garden_sem
+/garden_cv
+/garden.log
+/garden_test_sem.log
+/garden_test_cv.log
+/test-results/

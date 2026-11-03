@@ -1,0 +1,10 @@
+make clean
+make[1]: Entering directory '/mnt/c/Users/ПК/Desktop/hse/prog/akos/idz/idz2'
+rm -f garden_sem garden_cv garden.log garden_test_sem.log garden_test_cv.log
+rm -rf test-results
+make[1]: Leaving directory '/mnt/c/Users/ПК/Desktop/hse/prog/akos/idz/idz2'
+make CFLAGS="-std=c11 -O1 -g -Wall -Wextra -Wpedantic -fsanitize=thread" all
+make[1]: Entering directory '/mnt/c/Users/ПК/Desktop/hse/prog/akos/idz/idz2'
+cc -std=c11 -O1 -g -Wall -Wextra -Wpedantic -fsanitize=thread main.c cmd_parser.c config_reader.c garden_map.c gardener.c simulation.c writer.c -o garden_sem -pthread
+cc -std=c11 -O1 -g -Wall -Wextra -Wpedantic -fsanitize=thread -DUSE_CV main.c cmd_parser.c config_reader.c garden_map.c gardener.c simulation.c writer.c -o garden_cv -pthread
+make[1]: Leaving directory '/mnt/c/Users/ПК/Desktop/hse/prog/akos/idz/idz2'

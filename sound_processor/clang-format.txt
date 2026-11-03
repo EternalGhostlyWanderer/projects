@@ -1,0 +1,211 @@
+############
+# LANGUAGE #
+############
+
+ColumnLimit: 80 # The exact value isn't clear, but it's the most used 
+
+###########
+# INDENTS #
+###########
+
+IndentWidth: 4 
+UseTab: Never # Using tabs is forbidden 
+
+# Class Access Modifiers (e.g. public) won't be indented
+IndentAccessModifiers: false
+AccessModifierOffset: -4
+
+# No indents in namespaces
+NamespaceIndentation: None 
+
+#############
+# ALIGNMENT #
+#############
+
+# Alignment of consecutive assignments
+# 
+# Consecutive mode looks like:
+# int a             = 1;
+# int someLongName  = 2;
+# double c          = 3.0;
+#
+# None mode looks like:
+# int a = 1;
+# int someLongName = 2;
+# double c = 3.0;
+AlignConsecutiveAssignments: false
+
+# Ptrs and references
+# int* var1, var2; 
+PointerAlignment: Left
+ReferenceAlignment: Left
+
+# Apply indentation rules and reflow long comments into new lines
+# trying to obey the ColumnLimit.
+ReflowComments: true
+
+##########
+# SPACES #
+##########
+
+# The number of spaces before trailing line comments (// - comments)
+# This doesn't affect trailing block comments (*/ - comments)
+SpacesBeforeTrailingComments: 2
+
+# Template argument list like:
+# static_cast<int>(arg);
+#
+# NOT:
+# static_cast< int >(arg);
+SpacesInAngles: Never
+
+# ???
+# If true:
+# int arr[] = { 1, 2, 3 };
+#
+# If false:
+# int arr[] = {1, 2, 3};
+SpacesInContainerLiterals: false
+
+# How many spaces are allowed at the start of a line comment
+# In the code examples there were a single space
+SpacesInLineCommentPrefix:
+  Minimum: 1
+  Maximum: 1
+
+# Zero spaces will be inserted after '(' and before ')'
+SpacesInParentheses: false
+
+# Zero spaces will be inserted after '[' and before ']'
+SpacesInSquareBrackets: false
+
+# Remain (or add) space before assignment operators
+SpaceBeforeAssignmentOperators: true
+
+# Remove spaces before case colon
+SpaceBeforeCaseColon: false
+
+# Remove spaces before constructor initializer colon
+SpaceBeforeCtorInitializerColon: false
+
+# Remove spaces before inheritance colon
+SpaceBeforeInheritanceColon: false
+
+# ???
+# Space won't be inserted before a C++11 braced list
+SpaceBeforeCpp11BracedList: false
+
+# Control of individual space before parentheses
+#
+# E.g.: 
+#
+# true: if (...) {}
+# false: if(...) {}
+#
+# (in all the code examples there is no space)
+SpaceBeforeParens: Custom
+SpaceBeforeParensOptions:
+  AfterControlStatements: false
+  AfterForeachMacros: false
+  AfterFunctionDeclarationName: false
+  AfterFunctionDefinitionName: false
+  AfterIfMacros: false
+  AfterOverloadedOperator: false
+  AfterPlacementOperator: false
+  AfterRequiresInClause: false
+  AfterRequiresInExpression: false
+  BeforeNonEmptyParentheses: false
+
+# Remove spaces before range-based for loop colon
+SpaceBeforeRangeBasedForLoopColon: false
+
+# Remove spaces before '[
+SpaceBeforeSquareBrackets: false
+
+##########
+# BRACES #
+##########
+
+# Brace-style like 
+#
+# statement
+# {
+#   ...
+# }
+# other_statement
+# {
+#   ...
+# }
+# (for most cases)
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterNamespace: false # In the example it was an exception
+  AfterEnum: true
+  AfterClass: true
+  AfterCaseLabel: true
+  AfterControlStatement: Always # if, switch, for, etc.
+  AfterFunction: true
+  AfterStruct: true
+  AfterUnion: true
+  AfterExternBlock: true
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeLambdaBody: true
+  BeforeWhile: true
+  IndentBraces: false
+  #? SplitEmptyFunction: false
+  #? SplitEmptyRecord: false
+  #? SplitEmptyNamespace: false
+
+# Namespaces style like:
+#
+# namespace Foo { namespace Bar { 
+# }}
+#
+# NOT:
+# namespace Foo {
+# namespace Bar {
+# }
+# }
+CompactNamespaces: true
+
+# Style for single-line functions like (param. 'None'):
+# int getValue 
+# {
+#   return _value;
+# }
+#
+# If you prefer style like:
+# int getValue { return _value; }
+# set this param. to 'All'
+#
+# (in the code rules the both variants are acceptable)
+AllowShortFunctionsOnASingleLine: All
+
+#
+#? AllowShortNamespacesOnASignleLine: true
+#? ShortNamespaceLines: 1
+
+# Remove optional braces of control statements (if, else ...)
+# 
+# false:
+#   if (statement)
+#   {
+#     intruction;
+#   }
+#
+# true:
+#   if (statement)
+#     instruction;
+#
+# (in the code rules the both variants are acceptable
+# but the second one is preferable)
+RemoveBracesLLVM: true
+
+#########
+# OTHER #
+#########
+
+# Adds comments to the namespaces
+# E.g.: namespace MyNamespace::MyNestedNamespace
+FixNamespaceComments: true

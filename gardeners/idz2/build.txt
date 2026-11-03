@@ -1,0 +1,2 @@
+cc -std=c11 -O2 -Wall -Wextra -Wpedantic main.c cmd_parser.c config_reader.c garden_map.c gardener.c simulation.c writer.c -o garden_sem -pthread
+cc -std=c11 -O2 -Wall -Wextra -Wpedantic -DUSE_CV main.c cmd_parser.c config_reader.c garden_map.c gardener.c simulation.c writer.c -o garden_cv -pthread
