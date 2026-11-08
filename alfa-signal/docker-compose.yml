@@ -1,0 +1,142 @@
+name: alfa-signal
+
+# Логи контейнеров по умолчанию растут без предела и со временем занимают весь диск:
+# не больше 3 файлов по 10 МБ на сервис.
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  backend:
+    logging: *logging
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    # Доступ к Ollama на хосте: LLM_BASE_URL=http://host.docker.internal:11434/v1.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      APP_DB_PATH: /app/backend/var/app.sqlite3
+      LLM_STATE_DB: /app/backend/var/llm.sqlite3
+      COMPANIES_CSV: ${COMPANIES_CSV:-data/synthetic/companies.csv}
+      PAYMENTS_CSV: ${PAYMENTS_CSV:-data/synthetic/payments.csv}
+      PEOPLE_CSV: ${PEOPLE_CSV:-data/synthetic/people.csv}
+      SEED_SYNTHETIC_DATA: ${SEED_SYNTHETIC_DATA:-1}
+      DEMO_EVENTS_FILE: ${DEMO_EVENTS_FILE:-data/synthetic/news.json}
+      # Провайдер LLM: openrouter | groq | gemini | mistral | ollama | hackathon (docs/free-llm-providers.md).
+      # Пустые LLM_BASE_URL / LLM_MODEL / LLM_THINK_STYLE берутся из пресета провайдера.
+      LLM_PROVIDER: ${LLM_PROVIDER:-openrouter}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_BASE_URL: ${LLM_BASE_URL:-}
+      LLM_MODEL: ${LLM_MODEL:-}
+      LLM_MODEL_EXTRACT: ${LLM_MODEL_EXTRACT:-}
+      LLM_MODEL_ANALYZE: ${LLM_MODEL_ANALYZE:-}
+      LLM_MODEL_VERIFY: ${LLM_MODEL_VERIFY:-}
+      # Запасные нейросети по порядку (docs/free-llm-providers.md): провайдер[:модель] через запятую.
+      LLM_FALLBACKS: ${LLM_FALLBACKS:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      MISTRAL_API_KEY: ${MISTRAL_API_KEY:-}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-}
+      LLM_THINK_STYLE: ${LLM_THINK_STYLE:-}
+      LLM_DAILY_REQUEST_LIMIT: ${LLM_DAILY_REQUEST_LIMIT:-300}
+      LLM_DAILY_COST_LIMIT: ${LLM_DAILY_COST_LIMIT:-}
+      DEMO_AUTH_REQUIRED: ${DEMO_AUTH_REQUIRED:-0}
+      DEMO_AUTH_SECRET: ${DEMO_AUTH_SECRET:-}
+      # RSS Мосбиржи отдаёт весь архив (6,5 МБ) и не разбирается — новости биржи идут через ISS API (NEWS_OFFICIAL_SOURCES).
+      NEWS_RSS_URLS: ${NEWS_RSS_URLS:-https://www.cbr.ru/rss/RssPress,https://www.cbr.ru/rss/eventrss,https://www.kommersant.ru/RSS/section-economics.xml,https://www.vedomosti.ru/rss/rubric/economics,https://rssexport.rbc.ru/rbcnews/news/30/full.rss,https://www.interfax.ru/rss.asp,https://tass.ru/rss/v2.xml,https://www.kommersant.ru/RSS/section-business.xml}
+      NEWS_OFFICIAL_SOURCES: ${NEWS_OFFICIAL_SOURCES:-cbr,moex}
+      # Иностранные издания на английском (docs/news-collection.md): пусто — ленты по умолчанию, «-» — выключить.
+      NEWS_RSS_URLS_FOREIGN: ${NEWS_RSS_URLS_FOREIGN:-}
+      # Запросов к LLM на перевод заголовков за один сбор (пачка — до 12 новостей).
+      NEWS_TRANSLATE_BATCHES: ${NEWS_TRANSLATE_BATCHES:-4}
+      # 1 — агент загружает полный текст статьи, если в ленте только анонс.
+      NEWS_FETCH_FULL_TEXT: ${NEWS_FETCH_FULL_TEXT:-1}
+      NEWS_COLLECT_INTERVAL_MIN: ${NEWS_COLLECT_INTERVAL_MIN:-30}
+      NEWS_COLLECT_MODE: ${NEWS_COLLECT_MODE:-active}
+      # Сбор при входе и при открытии/перезапросе ленты, если новости старше N минут.
+      NEWS_REFRESH_ON_LOGIN_MIN: ${NEWS_REFRESH_ON_LOGIN_MIN:-30}
+      NEWS_REFRESH_ON_OPEN_MIN: ${NEWS_REFRESH_ON_OPEN_MIN:-30}
+      PREANALYZE_ACTIVE: ${PREANALYZE_ACTIVE:-1}
+      PREANALYZE_PER_COMPANY: ${PREANALYZE_PER_COMPANY:-10}
+      PREANALYZE_DAILY_LIMIT: ${PREANALYZE_DAILY_LIMIT:-150}
+      PREANALYZE_WORKERS: ${PREANALYZE_WORKERS:-2}
+      # Экономия запросов к LLM (docs/free-llm-providers.md): 0 — план агента и ролевой блок по правилам.
+      AGENT_LLM_PLAN: ${AGENT_LLM_PLAN:-1}
+      ROLE_VIEW_LLM: ${ROLE_VIEW_LLM:-1}
+      # Чат: 1 — на простые вопросы не по теме краткий ответ ИИ (демо), 0 — вежливый отказ.
+      CHAT_OFF_TOPIC_ANSWERS: ${CHAT_OFF_TOPIC_ANSWERS:-1}
+      # Готовые разборы для демо без ключа LLM (data/demo/README.md).
+      DEMO_SNAPSHOT_FILE: ${DEMO_SNAPSHOT_FILE:-data/demo/demo_snapshot.json}
+      # Пул заготовленных демонстрационных новостей поверх снимка (data/demo/extra_news.json).
+      DEMO_EXTRA_NEWS_FILE: ${DEMO_EXTRA_NEWS_FILE:-data/demo/extra_news.json}
+      # Внешний сервер: API_REQUIRE_COMPANY_SCOPE=1 — данные компании только с X-Company-Id,
+      # список компаний — только DEMO_COMPANY_IDS (docs/api.md, «Строгая изоляция компаний»).
+      API_REQUIRE_COMPANY_SCOPE: ${API_REQUIRE_COMPANY_SCOPE:-0}
+      DEMO_COMPANY_IDS: ${DEMO_COMPANY_IDS:-SYN_001,SYN_002,SYN_003,SYN_004,SYN_005,SYN_006}
+      DEMO_USERS: ${DEMO_USERS:-}
+      # Внешний сервер (docs/deployment.md, «Вход на сервере»): AUTH_STRICT=1 — вход обязателен,
+      # пароли только хешем (backend/scripts/hash_password.py), Swagger выключен (API_DOCS=1 — включить).
+      AUTH_STRICT: ${AUTH_STRICT:-0}
+      AUTH_USERS: ${AUTH_USERS:-}
+      # Регистрация на сайте без администратора (1 — включена); с кодом — только по приглашению.
+      AUTH_REGISTRATION: ${AUTH_REGISTRATION:-1}
+      AUTH_REGISTRATION_CODE: ${AUTH_REGISTRATION_CODE:-}
+      AUTH_SESSION_HOURS: ${AUTH_SESSION_HOURS:-24}
+      AUTH_SESSION_MAX_DAYS: ${AUTH_SESSION_MAX_DAYS:-7}
+      API_DOCS: ${API_DOCS:-}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080}
+    volumes:
+      - backend-state:/app/backend/var
+      - ${ALFA_SIGNAL_DATA_DIR:-./data}:/app/data:ro
+    ports:
+      # Наружу backend не открыт: запросы идут через Nginx фронтенда (/api). Docker публикует порты
+      # в обход ufw, поэтому привязка к 127.0.0.1 — единственная надёжная защита порта.
+      - "${BACKEND_BIND:-127.0.0.1}:${BACKEND_PORT:-8000}:8000"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+  frontend:
+    logging: *logging
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_USE_DEMO: ${VITE_USE_DEMO:-0}
+        VITE_COMPANY_IDS: ${VITE_COMPANY_IDS:-SYN_001,SYN_002,SYN_003,SYN_004,SYN_005,SYN_006}
+        VITE_API_URL: ""
+        VITE_DEMO_AUTH: ${VITE_DEMO_AUTH:-0}
+        VITE_LOGIN_HINT: ${VITE_LOGIN_HINT:-1}
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      # На сервере FRONTEND_BIND=127.0.0.1: снаружи сайт доступен только через Nginx на хосте (HTTPS).
+      - "${FRONTEND_BIND:-0.0.0.0}:${FRONTEND_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:8080/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  backend-state:

@@ -1,0 +1,3 @@
+# Отображаемое имя автора в git log / git blame (и аннотациях IDE): коммиты, сделанные
+# с помощью ассистента, показываются под именем Анны.
+Anna Pavlovskaya <aapavlovskaia@edu.hse.ru> Claude <engfor804@gmail.com>

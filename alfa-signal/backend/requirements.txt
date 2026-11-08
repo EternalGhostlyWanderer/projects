@@ -1,0 +1,9 @@
+# Зависимости backend-приложения. Точные версии — в requirements.lock.
+fastapi>=0.110,<1.0
+uvicorn>=0.29,<1.0
+pydantic>=2.6,<3.0
+openai>=1.40.0,<3.0.0
+python-dotenv>=1.0.1,<2.0.0
+pymupdf>=1.24.0,<2.0.0
+# Для тестов API (fastapi.testclient)
+httpx>=0.27,<1.0

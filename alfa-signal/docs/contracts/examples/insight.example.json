@@ -1,0 +1,170 @@
+{
+  "schema_version": "2.0",
+  "kind": "mixed",
+  "relevance": {
+    "score": 80,
+    "level": "high",
+    "reasons": [
+      {
+        "text": "У компании есть кредитные продукты",
+        "basis": "FACT",
+        "evidence_ids": [
+          "company.product.loa"
+        ],
+        "confidence": "high"
+      }
+    ]
+  },
+  "event_summary": [
+    {
+      "text": "Регулятор сохранил ключевую ставку",
+      "basis": "FACT",
+      "evidence_ids": [
+        "event.main"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "mechanism": [
+    "Сохранение ставки",
+    "Стоимость фондирования",
+    "Цена новых кредитов"
+  ],
+  "direction": "negative",
+  "primary_effect": {
+    "text": "Новое финансирование может дешеветь медленнее плана",
+    "basis": "AI_INFERENCE",
+    "evidence_ids": [
+      "event.main",
+      "company.product.loa"
+    ],
+    "confidence": "medium"
+  },
+  "risks": [
+    {
+      "text": "Условия новых кредитов могут остаться выше плана",
+      "basis": "HYPOTHESIS",
+      "evidence_ids": [],
+      "confidence": "medium",
+      "title": "Дорогие заимствования",
+      "severity": "medium"
+    }
+  ],
+  "opportunities": [
+    {
+      "text": "Стабильная ставка упрощает планирование бюджета по кредитам.",
+      "basis": "AI_INFERENCE",
+      "evidence_ids": [
+        "event.main",
+        "company.product.loa"
+      ],
+      "confidence": "medium",
+      "title": "Предсказуемость платежей",
+      "potential": "low"
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "base",
+      "condition": "Ставка остаётся неизменной до конца года",
+      "outcome": {
+        "text": "Стоимость текущего долга не меняется, удешевления нового финансирования нет.",
+        "basis": "AI_INFERENCE",
+        "evidence_ids": [
+          "event.main"
+        ],
+        "confidence": "medium"
+      }
+    }
+  ],
+  "bank_view": {
+    "status": "not_found",
+    "claims": []
+  },
+  "next_steps": [
+    {
+      "action": "Проверить график пересмотра ставок",
+      "priority": "high"
+    }
+  ],
+  "unknowns": [
+    "Размер задолженности"
+  ],
+  "decision_question": "Когда планируются новые заимствования?",
+  "insight_id": "example-insight-001",
+  "company_id": "U_TEST",
+  "event_id": "EVT_1",
+  "evidence": [
+    {
+      "id": "event.main",
+      "type": "FACT",
+      "text": "Регулятор сохранил ключевую ставку. Синтетический сценарий.",
+      "source_kind": "news",
+      "source_id": "EVT_1",
+      "source_title": "Регулятор сохранил ключевую ставку",
+      "source_url": "https://example.com/news/1",
+      "source_date": null,
+      "source_page": null
+    },
+    {
+      "id": "company.industry",
+      "type": "FACT",
+      "text": "Основной вид деятельности: Производство металлических конструкций (25.11)",
+      "source_kind": "company_data",
+      "source_id": "MAINOKVED_NAME",
+      "source_title": "Профиль компании",
+      "source_url": null,
+      "source_date": null,
+      "source_page": null
+    },
+    {
+      "id": "company.location",
+      "type": "FACT",
+      "text": "Регистрация: Москва",
+      "source_kind": "company_data",
+      "source_id": "REGION",
+      "source_title": "Профиль компании",
+      "source_url": null,
+      "source_date": null,
+      "source_page": null
+    },
+    {
+      "id": "company.product.loa",
+      "type": "FACT",
+      "text": "У компании есть кредитные продукты в банке",
+      "source_kind": "company_data",
+      "source_id": "CL_PRODUCT_LOA_MARK",
+      "source_title": "Профиль компании",
+      "source_url": null,
+      "source_date": null,
+      "source_page": null
+    },
+    {
+      "id": "company.fts",
+      "type": "FACT",
+      "text": "По данным ФТС у компании есть внешнеторговая связь со страной: Китай",
+      "source_kind": "company_data",
+      "source_id": "FTS_COUNTRY_NAME",
+      "source_title": "Профиль компании",
+      "source_url": null,
+      "source_date": null,
+      "source_page": null
+    },
+    {
+      "id": "company.payments.outgoing",
+      "type": "FACT",
+      "text": "Исходящие платежи: контрагентов — 12, доля пяти крупнейших — 83% (концентрация: high). Период с 1 января; сумма платежей не равна выручке.",
+      "source_kind": "company_data",
+      "source_id": "payment_edges",
+      "source_title": "Профиль компании",
+      "source_url": null,
+      "source_date": null,
+      "source_page": null
+    }
+  ],
+  "trace_id": null,
+  "model": "qwen/qwen3.6-35b-a3b",
+  "created_at": "2026-10-25T09:00:00+00:00",
+  "quality_status": "unverified",
+  "quality_issues": []
+}

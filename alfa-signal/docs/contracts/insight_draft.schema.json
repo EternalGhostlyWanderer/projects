@@ -1,0 +1,399 @@
+{
+  "$defs": {
+    "BankView": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "found",
+            "not_found"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "BankView",
+      "type": "object"
+    },
+    "Claim": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "basis": {
+          "description": "FACT — подтверждено новостью или данными компании; BANK_ANALYSIS — тезис из материала Альфа-Банка; AI_INFERENCE — вывод модели; HYPOTHESIS — требует проверки",
+          "enum": [
+            "FACT",
+            "BANK_ANALYSIS",
+            "AI_INFERENCE",
+            "HYPOTHESIS"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "description": "id из переданного списка evidence; обязательны для FACT и BANK_ANALYSIS",
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "confidence": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "title": "Confidence",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "basis",
+        "confidence"
+      ],
+      "title": "Claim",
+      "type": "object"
+    },
+    "NextStep": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "minLength": 1,
+          "title": "Action",
+          "type": "string"
+        },
+        "priority": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "title": "Priority",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "priority"
+      ],
+      "title": "NextStep",
+      "type": "object"
+    },
+    "Opportunity": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "basis": {
+          "description": "FACT — подтверждено новостью или данными компании; BANK_ANALYSIS — тезис из материала Альфа-Банка; AI_INFERENCE — вывод модели; HYPOTHESIS — требует проверки",
+          "enum": [
+            "FACT",
+            "BANK_ANALYSIS",
+            "AI_INFERENCE",
+            "HYPOTHESIS"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "description": "id из переданного списка evidence; обязательны для FACT и BANK_ANALYSIS",
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "confidence": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "title": "Confidence",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "potential": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "title": "Potential",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "basis",
+        "confidence",
+        "title",
+        "potential"
+      ],
+      "title": "Opportunity",
+      "type": "object"
+    },
+    "Relevance": {
+      "additionalProperties": false,
+      "properties": {
+        "score": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Score",
+          "type": "integer"
+        },
+        "level": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "title": "Level",
+          "type": "string"
+        },
+        "reasons": {
+          "description": "Конкретные признаки компании, из-за которых событие важно",
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "minItems": 1,
+          "title": "Reasons",
+          "type": "array"
+        }
+      },
+      "required": [
+        "score",
+        "level",
+        "reasons"
+      ],
+      "title": "Relevance",
+      "type": "object"
+    },
+    "Risk": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "basis": {
+          "description": "FACT — подтверждено новостью или данными компании; BANK_ANALYSIS — тезис из материала Альфа-Банка; AI_INFERENCE — вывод модели; HYPOTHESIS — требует проверки",
+          "enum": [
+            "FACT",
+            "BANK_ANALYSIS",
+            "AI_INFERENCE",
+            "HYPOTHESIS"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "description": "id из переданного списка evidence; обязательны для FACT и BANK_ANALYSIS",
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "confidence": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "title": "Confidence",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "title": "Severity",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "basis",
+        "confidence",
+        "title",
+        "severity"
+      ],
+      "title": "Risk",
+      "type": "object"
+    },
+    "Scenario": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "enum": [
+            "base",
+            "negative",
+            "positive"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "condition": {
+          "description": "При каком условии реализуется",
+          "minLength": 1,
+          "title": "Condition",
+          "type": "string"
+        },
+        "outcome": {
+          "$ref": "#/$defs/Claim"
+        }
+      },
+      "required": [
+        "name",
+        "condition",
+        "outcome"
+      ],
+      "title": "Scenario",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Часть инсайта, которую формирует LLM.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "risk",
+        "opportunity",
+        "mixed"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "relevance": {
+      "$ref": "#/$defs/Relevance"
+    },
+    "event_summary": {
+      "description": "Что произошло: только факты из новости с basis=FACT",
+      "items": {
+        "$ref": "#/$defs/Claim"
+      },
+      "minItems": 1,
+      "title": "Event Summary",
+      "type": "array"
+    },
+    "mechanism": {
+      "description": "Причинная цепочка от события к эффекту, по шагу на элемент",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 2,
+      "title": "Mechanism",
+      "type": "array"
+    },
+    "direction": {
+      "enum": [
+        "positive",
+        "negative",
+        "mixed",
+        "uncertain"
+      ],
+      "title": "Direction",
+      "type": "string"
+    },
+    "primary_effect": {
+      "$ref": "#/$defs/Claim"
+    },
+    "risks": {
+      "items": {
+        "$ref": "#/$defs/Risk"
+      },
+      "title": "Risks",
+      "type": "array"
+    },
+    "opportunities": {
+      "items": {
+        "$ref": "#/$defs/Opportunity"
+      },
+      "title": "Opportunities",
+      "type": "array"
+    },
+    "scenarios": {
+      "items": {
+        "$ref": "#/$defs/Scenario"
+      },
+      "title": "Scenarios",
+      "type": "array"
+    },
+    "bank_view": {
+      "$ref": "#/$defs/BankView"
+    },
+    "next_steps": {
+      "items": {
+        "$ref": "#/$defs/NextStep"
+      },
+      "minItems": 1,
+      "title": "Next Steps",
+      "type": "array"
+    },
+    "unknowns": {
+      "description": "Каких данных не хватает для более точного вывода",
+      "items": {
+        "type": "string"
+      },
+      "title": "Unknowns",
+      "type": "array"
+    },
+    "decision_question": {
+      "description": "Главный вопрос, который стоит решить руководителю",
+      "minLength": 1,
+      "title": "Decision Question",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "relevance",
+    "event_summary",
+    "mechanism",
+    "direction",
+    "primary_effect",
+    "bank_view",
+    "next_steps",
+    "decision_question"
+  ],
+  "title": "InsightDraft",
+  "type": "object"
+}
